@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.2.0"
+    id("org.springframework.boot") version "3.2.1"
     id("io.spring.dependency-management") version "1.1.4"
     checkstyle
 }
@@ -17,7 +17,13 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("io.minio:minio:8.5.7")
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
 }

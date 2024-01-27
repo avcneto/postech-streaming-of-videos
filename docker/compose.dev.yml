@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:7.0.5
+    container_name: webflux-mongodb
+    restart: unless-stopped
+    environment:
+      - "MONGO_INITDB_DATABASE=video-streaming"
+      - "MONGO_INITDB_ROOT_USERNAME=admin"
+      - "MONGO_INITDB_ROOT_PASSWORD=my-password"
+    ports:
+      - "27777:27017"
+    volumes:
+      - mongodb:/data/db
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: 'admin'
+      MINIO_ROOT_PASSWORD: 'my-password'
+      MINIO_ADDRESS: ':9000'
+      MINIO_CONSOLE_ADDRESS: ':9001'
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./data:/data
+    command: server /data
+volumes:
+  mongodb:
+    driver: local

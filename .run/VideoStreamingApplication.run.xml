@@ -2,6 +2,11 @@
   <configuration default="false" name="VideoStreamingApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <option name="ALTERNATIVE_JRE_PATH" value="17" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <envs>
+      <env name="MONGO_INITDB_ROOT_DATABASE" value="video-streaming" />
+      <env name="MONGO_INITDB_ROOT_PASSWORD" value="my-password" />
+      <env name="MONGO_INITDB_ROOT_USERNAME" value="admin" />
+    </envs>
     <module name="video-streaming.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.postechvideostreaming.videostreaming.VideoStreamingApplication" />
     <method v="2">

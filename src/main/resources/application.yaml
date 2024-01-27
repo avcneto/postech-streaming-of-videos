@@ -1,1 +1,48 @@
+spring:
+  application:
+    name: video-streaming
 
+  data:
+    mongodb:
+      host: localhost
+      port: 27777
+      database: ${MONGO_INITDB_ROOT_DATABASE}
+      username: ${MONGO_INITDB_ROOT_USERNAME}
+      password: ${MONGO_INITDB_ROOT_PASSWORD}
+      authentication-database: admin
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    deserialization:
+      fail-on-unknown-properties: false
+
+  docker:
+    compose:
+      file: ./docker/compose.dev.yml
+      enabled: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+
+server:
+  port: 8080
+  error:
+    include-stacktrace: on_param
+    include-message: always
+    include-binding-errors: always
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          r2dbc: INFO
+
+minio:
+  endpoint: http://localhost:9000
+  accessKey: admin
+  secretKey: my-password
+  bucket: videos-bucket
