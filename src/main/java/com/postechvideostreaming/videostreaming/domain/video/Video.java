@@ -29,6 +29,7 @@ public class Video {
   private String title;
   private String url;
   private String description;
+  private Category category;
   @JsonFormat(pattern = ZONED_DATETIME_FORMAT)
   private ZonedDateTime creationDate;
   @JsonFormat(pattern = ZONED_DATETIME_FORMAT)
@@ -41,6 +42,7 @@ public class Video {
     this.title = videoDTO.title();
     this.url = videoDTO.url();
     this.description = videoDTO.description();
+    this.category = videoDTO.category();
     this.creationDate = videoDTO.creationDate();
     this.lastUpdate = videoDTO.lastUpdate();
   }
