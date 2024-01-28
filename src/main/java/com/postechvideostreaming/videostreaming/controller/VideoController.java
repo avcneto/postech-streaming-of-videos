@@ -1,6 +1,6 @@
 package com.postechvideostreaming.videostreaming.controller;
 
-import com.postechvideostreaming.videostreaming.domain.video.Category;
+import com.postechvideostreaming.videostreaming.domain.video.Video;
 import com.postechvideostreaming.videostreaming.domain.video.VideoSearchParams;
 import com.postechvideostreaming.videostreaming.dto.video.UpdateVideoDTO;
 import com.postechvideostreaming.videostreaming.dto.video.VideoDTO;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 
 import static com.postechvideostreaming.videostreaming.util.Constants.X_API_VERSION_1;
@@ -44,15 +43,13 @@ public record VideoController(
   public Mono<ResponseEntity<VideoDTO>> uploadVideo(Mono<FilePart> video,
                                                     @RequestPart String title,
                                                     @RequestPart String description,
-                                                    @RequestParam Category category
+                                                    @RequestPart String category
   ) {
     return videoService.uploadVideo(video, title, description, category)
-            .flatMap(videoDto -> {
-              var uri = URI.create(format(VIDEOS_UPLOAD_PATH_ID, videoDto.id()));
-
-              return Mono.just(ResponseEntity.created(uri)
-                      .body(videoDto));
-            });
+            .flatMap(videoDto -> Mono.just(ResponseEntity
+                    .created(URI.create(format(VIDEOS_UPLOAD_PATH_ID, videoDto.id())))
+                    .body(videoDto))
+            );
   }
 
   @PatchMapping(headers = X_API_VERSION_1)
@@ -65,10 +62,10 @@ public record VideoController(
             .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
   }
 
-  @GetMapping(headers = "X-API-VERSION=1")
-  public Mono<ResponseEntity<List<VideoDTO>>> getVideoByParam(@ModelAttribute VideoSearchParams searchParams) {
-    return videoService.getVideoByParam()
+  @GetMapping(headers = X_API_VERSION_1)
+  public Mono<ResponseEntity<List<Video>>> getVideoByParam(@ModelAttribute Mono<VideoSearchParams> searchParams) {
+    return videoService.getVideoByParam(searchParams)
             .collectList()
-            .map(videoList -> ResponseEntity.ok(videoList.isEmpty() ? Collections.emptyList() : videoList));
+            .map(ResponseEntity::ok);
   }
 }

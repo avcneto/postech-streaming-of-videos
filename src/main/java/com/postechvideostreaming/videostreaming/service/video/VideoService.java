@@ -1,7 +1,7 @@
 package com.postechvideostreaming.videostreaming.service.video;
 
-import com.postechvideostreaming.videostreaming.domain.video.Category;
 import com.postechvideostreaming.videostreaming.domain.video.Video;
+import com.postechvideostreaming.videostreaming.domain.video.VideoSearchParams;
 import com.postechvideostreaming.videostreaming.dto.video.UpdateVideoDTO;
 import com.postechvideostreaming.videostreaming.dto.video.VideoDTO;
 import com.postechvideostreaming.videostreaming.exception.FailedDependencyException;
@@ -22,11 +22,10 @@ import reactor.core.scheduler.Schedulers;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-import static com.postechvideostreaming.videostreaming.util.Validators.isNullOrBlank;
+import static com.postechvideostreaming.videostreaming.domain.video.Category.convertStringToCategory;
+import static com.postechvideostreaming.videostreaming.util.Validators.isNullOrEmptyOrBlank;
 import static java.lang.String.format;
 
 @Slf4j
@@ -53,7 +52,7 @@ public class VideoService {
     this.minioClient = minioClient;
   }
 
-  public Mono<VideoDTO> uploadVideo(Mono<FilePart> video, String title, String description, Category category) {
+  public Mono<VideoDTO> uploadVideo(Mono<FilePart> video, String title, String description, String category) {
     return video
             .subscribeOn(Schedulers.boundedElastic())
             .flatMap(multipartFile -> {
@@ -94,13 +93,12 @@ public class VideoService {
             );
   }
 
-  public Flux<VideoDTO> getVideoByParam() {
-    // TODO implements search by param
-    return Flux.just(new VideoDTO("", "", "", "", Category.COMEDY, ZonedDateTime.now(),  ZonedDateTime.now()));
+  public Flux<Video> getVideoByParam(Mono<VideoSearchParams> searchParams) {
+    return searchParams.flatMapMany(videoRepository::findByCustomParams);
   }
 
   private VideoDTO getVideoDTO(ObjectWriteResponse minioResponse, String title,
-                               String description, Category category
+                               String description, String category
   ) {
     var date = ZonedDateTime.now();
 
@@ -109,7 +107,7 @@ public class VideoService {
             title,
             createUrl(minioResponse.object()),
             description,
-            category,
+            convertStringToCategory(category),
             date,
             date
     );
@@ -162,7 +160,7 @@ public class VideoService {
         throw new FailedDependencyException(INACCESSIBLE_FIELDS, ex);
       }
 
-      if (value != null && !isNullOrBlank(value.toString())) {
+      if (!isNullOrEmptyOrBlank(value)) {
         Field correspondingField;
 
         try {

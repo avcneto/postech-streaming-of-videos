@@ -10,10 +10,6 @@ spring:
       username: ${MONGO_INITDB_ROOT_USERNAME}
       password: ${MONGO_INITDB_ROOT_PASSWORD}
       authentication-database: admin
-  jackson:
-    property-naming-strategy: SNAKE_CASE
-    deserialization:
-      fail-on-unknown-properties: false
 
   docker:
     compose:
@@ -40,6 +36,7 @@ logging:
       springframework:
         data:
           r2dbc: INFO
+
 
 minio:
   endpoint: http://localhost:9000
