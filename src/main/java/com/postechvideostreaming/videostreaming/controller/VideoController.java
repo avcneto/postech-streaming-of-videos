@@ -9,6 +9,7 @@ import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,6 +37,7 @@ public record VideoController(
         MinioClient minioClient
 ) {
 
+  private static final String VIDEO_ID = "videoId";
   private static final String VIDEOS_UPLOAD_PATH_ID = "/upload/%s";
   private static final String UPLOAD_PATH = "/upload";
 
@@ -67,5 +69,11 @@ public record VideoController(
     return videoService.getVideoByParam(searchParams)
             .collectList()
             .map(ResponseEntity::ok);
+  }
+
+  @DeleteMapping(headers = X_API_VERSION_1, params = VIDEO_ID)
+  public Mono<ResponseEntity<Void>> deleteByVideoId(String videoId) {
+    return videoService.deleteByVideoId(videoId)
+            .then(Mono.fromCallable(() -> ResponseEntity.noContent().build()));
   }
 }

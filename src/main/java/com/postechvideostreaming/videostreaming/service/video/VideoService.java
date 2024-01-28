@@ -9,6 +9,7 @@ import com.postechvideostreaming.videostreaming.repository.video.VideoRepository
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.ObjectWriteResponse;
+import io.minio.RemoveObjectArgs;
 import io.minio.UploadObjectArgs;
 import io.minio.http.Method;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,7 @@ public class VideoService {
   private static final String ERROR_GETTING_MINIO_URL = "Error getting minio url";
   private static final String NON_MATCHING = "non-matching fields between UserUpdateDTO and User";
   private static final String INACCESSIBLE_FIELDS = "user update has inaccessible fields";
+  private static final String ERROR_TO_REMOVE_THE_VIDEO = "error to remove the video";
   private static final String STREAMING_URL = "http://localhost:%s/streaming/video/%s";
 
   private final VideoRepository videoRepository;
@@ -97,9 +99,24 @@ public class VideoService {
     return searchParams.flatMapMany(videoRepository::findByCustomParams);
   }
 
-  private VideoDTO getVideoDTO(ObjectWriteResponse minioResponse, String title,
-                               String description, String category
-  ) {
+  public Mono<Void> deleteByVideoId(String videoId) {
+    return Mono.defer(() -> {
+      try {
+        minioClient.removeObject(RemoveObjectArgs.builder()
+                .bucket(bucketName)
+                .object(videoId)
+                .build());
+
+        return videoRepository.deleteById(videoId);
+      } catch (Exception ex) {
+        log.error(ERROR_TO_REMOVE_THE_VIDEO, ex);
+        return Mono.error(new FailedDependencyException(ERROR_TO_REMOVE_THE_VIDEO, ex));
+      }
+    });
+  }
+
+
+  private VideoDTO getVideoDTO(ObjectWriteResponse minioResponse, String title, String description, String category) {
     var date = ZonedDateTime.now();
 
     return new VideoDTO(
