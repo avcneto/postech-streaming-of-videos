@@ -1,9 +1,9 @@
 package com.postechvideostreaming.videostreaming.repository.video;
 
-import com.postechvideostreaming.videostreaming.domain.video.Video;
 import com.postechvideostreaming.videostreaming.domain.video.VideoSearchParams;
-import reactor.core.publisher.Flux;
+import com.postechvideostreaming.videostreaming.dto.video.VideoSearch;
+import reactor.core.publisher.Mono;
 
 public interface VideoRepositoryCustom {
-  Flux<Video> findByCustomParams(VideoSearchParams params);
+  Mono<VideoSearch> findByCustomParams(VideoSearchParams params);
 }

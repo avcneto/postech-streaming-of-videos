@@ -5,6 +5,7 @@ import com.postechvideostreaming.videostreaming.domain.video.VideoSearchParams;
 import com.postechvideostreaming.videostreaming.dto.video.UpdateVideoDTO;
 import com.postechvideostreaming.videostreaming.dto.video.VideoDTO;
 import com.postechvideostreaming.videostreaming.service.video.VideoService;
+import com.postechvideostreaming.videostreaming.util.Pagination;
 import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.List;
 
 import static com.postechvideostreaming.videostreaming.util.Constants.X_API_VERSION_1;
 import static java.lang.String.format;
@@ -65,10 +65,9 @@ public record VideoController(
   }
 
   @GetMapping(headers = X_API_VERSION_1)
-  public Mono<ResponseEntity<List<Video>>> getVideoByParam(@ModelAttribute Mono<VideoSearchParams> searchParams) {
+  public Mono<ResponseEntity<Pagination<Video>>> getVideoByParam(@ModelAttribute Mono<VideoSearchParams> searchParams) {
     return videoService.getVideoByParam(searchParams)
-            .collectList()
-            .map(ResponseEntity::ok);
+            .flatMap(it -> Mono.just(ResponseEntity.ok(it)));
   }
 
   @DeleteMapping(headers = X_API_VERSION_1, params = VIDEO_ID)

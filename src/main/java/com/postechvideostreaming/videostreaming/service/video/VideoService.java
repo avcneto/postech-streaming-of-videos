@@ -6,6 +6,7 @@ import com.postechvideostreaming.videostreaming.dto.video.UpdateVideoDTO;
 import com.postechvideostreaming.videostreaming.dto.video.VideoDTO;
 import com.postechvideostreaming.videostreaming.exception.FailedDependencyException;
 import com.postechvideostreaming.videostreaming.repository.video.VideoRepository;
+import com.postechvideostreaming.videostreaming.util.Pagination;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.ObjectWriteResponse;
@@ -16,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -28,6 +28,7 @@ import java.util.UUID;
 import static com.postechvideostreaming.videostreaming.domain.video.Category.convertStringToCategory;
 import static com.postechvideostreaming.videostreaming.util.Validators.isNullOrEmptyOrBlank;
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @Service
@@ -45,6 +46,7 @@ public class VideoService {
   private static final String INACCESSIBLE_FIELDS = "user update has inaccessible fields";
   private static final String ERROR_TO_REMOVE_THE_VIDEO = "error to remove the video";
   private static final String STREAMING_URL = "http://localhost:%s/streaming/video/%s";
+  private static final Long ZERO = 0L;
 
   private final VideoRepository videoRepository;
   private final MinioClient minioClient;
@@ -95,8 +97,22 @@ public class VideoService {
             );
   }
 
-  public Flux<Video> getVideoByParam(Mono<VideoSearchParams> searchParams) {
-    return searchParams.flatMapMany(videoRepository::findByCustomParams);
+  public Mono<Pagination<Video>> getVideoByParam(Mono<VideoSearchParams> searchParams) {
+    return searchParams
+            .flatMapMany(videoRepository::findByCustomParams)
+            .collectList()
+            .flatMap(videoSearchList ->
+                    Mono.justOrEmpty(videoSearchList.stream().findFirst())
+                            .flatMap(videoSearch ->
+                                    videoSearch.video()
+                                            .collectList()
+                                            .flatMap(videos ->
+                                                    videoSearch.total()
+                                                            .map(total -> new Pagination<>(videos, videoSearch.limit(), videoSearch.offSet(), total))
+                                            )
+                            )
+            )
+            .switchIfEmpty(searchParams.map(param -> new Pagination<Video>(emptyList(), param.getLimit(), param.getOffset(), ZERO)));
   }
 
   public Mono<Void> deleteByVideoId(String videoId) {

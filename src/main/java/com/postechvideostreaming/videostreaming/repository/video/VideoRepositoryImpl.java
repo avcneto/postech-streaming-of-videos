@@ -2,12 +2,17 @@ package com.postechvideostreaming.videostreaming.repository.video;
 
 import com.postechvideostreaming.videostreaming.domain.video.Video;
 import com.postechvideostreaming.videostreaming.domain.video.VideoSearchParams;
+import com.postechvideostreaming.videostreaming.dto.video.VideoSearch;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import static com.postechvideostreaming.videostreaming.domain.video.Order.ASC;
 import static com.postechvideostreaming.videostreaming.util.Validators.isNullOrEmptyOrBlank;
+import static org.springframework.data.domain.Sort.Order.asc;
+import static org.springframework.data.domain.Sort.Order.desc;
 
 public class VideoRepositoryImpl implements VideoRepositoryCustom {
 
@@ -26,7 +31,7 @@ public class VideoRepositoryImpl implements VideoRepositoryCustom {
   }
 
   @Override
-  public Flux<Video> findByCustomParams(VideoSearchParams params) {
+  public Mono<VideoSearch> findByCustomParams(VideoSearchParams params) {
     Query query = new Query();
 
     if (!isNullOrEmptyOrBlank(params.getVideoId())) {
@@ -51,6 +56,14 @@ public class VideoRepositoryImpl implements VideoRepositoryCustom {
               .lte(params.getEndCreationDate().atTime(TWENTY_THREE, FIFTY_NINE, FIFTY_NINE)));
     }
 
-    return mongoTemplate.find(query, Video.class);
+    query.with(params.getSort().equals(ASC) ? Sort.by(asc(CREATION_DATE)) : Sort.by(desc(CREATION_DATE)));
+    query.skip(params.getOffsetMultiplyLimit()).limit(params.getLimit());
+
+
+    return Mono.just(new VideoSearch(
+            mongoTemplate.find(query, Video.class),
+            mongoTemplate.count(query, Video.class),
+            params.getLimit(), params.getOffset()));
   }
+
 }
