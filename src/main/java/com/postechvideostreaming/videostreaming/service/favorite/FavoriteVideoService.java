@@ -19,25 +19,25 @@ public record FavoriteVideoService(
         VideoRepository videoRepository
 ) {
 
-  private static final String ERROR_SAVE_FAVORITE_VIDEO = "error saving favorite video";
+    private static final String ERROR_SAVE_FAVORITE_VIDEO = "error saving favorite video";
 
-  public Mono<FavoriteVideo> addFavoriteVideo(FavoriteVideoDTO favoriteVideoDTO) {
-    return Mono.defer(() -> favoriteVideoRepository
-                    .findByUserIdAndVideoId(favoriteVideoDTO.userId(), favoriteVideoDTO.videoId())
-                    .switchIfEmpty(favoriteVideoRepository.save(new FavoriteVideo(favoriteVideoDTO)))
-                    .flatMap(it -> favoriteVideoRepository.save(it.setFavorite(favoriteVideoDTO.favorite()))))
-            .onErrorResume(throwable -> {
-              log.error(ERROR_SAVE_FAVORITE_VIDEO, throwable);
-              return Mono.error(new FailedDependencyException(ERROR_SAVE_FAVORITE_VIDEO, throwable));
-            });
-  }
+    public Mono<FavoriteVideo> addFavoriteVideo(FavoriteVideoDTO favoriteVideoDTO) {
+        return Mono.defer(() -> favoriteVideoRepository
+                        .findByUserIdAndVideoId(favoriteVideoDTO.userId(), favoriteVideoDTO.videoId())
+                        .switchIfEmpty(favoriteVideoRepository.save(new FavoriteVideo(favoriteVideoDTO)))
+                        .flatMap(it -> favoriteVideoRepository.save(it.setFavorite(favoriteVideoDTO.favorite()))))
+                .onErrorResume(throwable -> {
+                    log.error(ERROR_SAVE_FAVORITE_VIDEO, throwable);
+                    return Mono.error(new FailedDependencyException(ERROR_SAVE_FAVORITE_VIDEO, throwable));
+                });
+    }
 
-  public Flux<Video> getRecommendation() {
-    return favoriteVideoRepository.countMostFrequentCategories()
-            .collectList()
-            .flatMapMany(it -> {
-              var categories = it.stream().map(CategoryCount::_id).toList();
-              return videoRepository.findRandomVideosByCategory(categories, 10);
-            });
-  }
+    public Flux<Video> getRecommendation() {
+        return favoriteVideoRepository.countMostFrequentCategories()
+                .collectList()
+                .flatMapMany(it -> {
+                    var categories = it.stream().map(CategoryCount::_id).toList();
+                    return videoRepository.findRandomVideosByCategory(categories, 10);
+                });
+    }
 }
