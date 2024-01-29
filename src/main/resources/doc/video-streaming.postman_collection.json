@@ -1,0 +1,732 @@
+{
+	"info": {
+		"_postman_id": "7a91a710-b597-42a3-a7c1-3c9a815d6310",
+		"name": "video-streaming",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29499384"
+	},
+	"item": [
+		{
+			"name": "ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{local}}/ping",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "ping",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/ping",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"ping"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "4"
+						}
+					],
+					"cookie": [],
+					"body": "pong"
+				}
+			]
+		},
+		{
+			"name": "video upload",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-API-Version",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "video",
+							"type": "file",
+							"src": "/C:/Users/decon/Downloads/IMG_3610.mp4"
+						},
+						{
+							"key": "title",
+							"value": "my video title",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "my video description",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "COMEDY",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "COMEDY",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{local}}/video/upload",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"video",
+						"upload"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "video upload",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video",
+									"type": "file",
+									"src": "/C:/Users/decon/Downloads/IMG_3610.mp4"
+								},
+								{
+									"key": "title",
+									"value": "my video title",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "my video description",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "COMEDY",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "COMEDY",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local}}/video/upload",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"video",
+								"upload"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Location",
+							"value": "/upload/691fa4f1-81b9-4ab8-a79d-9b702622e6f8"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "303"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n    \"title\": \"my video title\",\n    \"url\": \"http://localhost:8080/video/streaming?id=691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n    \"description\": \"my video description\",\n    \"category\": \"COMEDY\",\n    \"creationDate\": \"2024-01-29T15:59:15.529-0300\",\n    \"lastUpdate\": \"2024-01-29T15:59:15.529-0300\"\n}"
+				}
+			]
+		},
+		{
+			"name": "update video",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "X-API-Version",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"my update video title 2\",\r\n    \"description\": \"my update video description 2\",\r\n    \"category\": \"COMEDY\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{local}}/video?videoId=691fa4f1-81b9-4ab8-a79d-9b702622e6f8",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"video"
+					],
+					"query": [
+						{
+							"key": "videoId",
+							"value": "691fa4f1-81b9-4ab8-a79d-9b702622e6f8"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "update video",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"my update video title 2\",\r\n    \"description\": \"my update video description 2\",\r\n    \"category\": \"COMEDY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/video?videoId=691fa4f1-81b9-4ab8-a79d-9b702622e6f8",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"video"
+							],
+							"query": [
+								{
+									"key": "videoId",
+									"value": "691fa4f1-81b9-4ab8-a79d-9b702622e6f8"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "321"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n    \"title\": \"my update video title 2\",\n    \"url\": \"http://localhost:8080/video/streaming?id=691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n    \"description\": \"my update video description 2\",\n    \"category\": \"COMEDY\",\n    \"creationDate\": \"2024-01-29T15:59:15.529-0300\",\n    \"lastUpdate\": \"2024-01-29T16:06:15.358-0300\"\n}"
+				}
+			]
+		},
+		{
+			"name": "get video",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-Version",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{local}}/video",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"video"
+					],
+					"query": [
+						{
+							"key": "videoId",
+							"value": "0d1ee022-6f49-4fb5-9052-e03bfbdd1778",
+							"disabled": true
+						},
+						{
+							"key": "title",
+							"value": "update",
+							"disabled": true
+						},
+						{
+							"key": "description",
+							"value": "update",
+							"disabled": true
+						},
+						{
+							"key": "creationDate",
+							"value": "2024-01-28",
+							"disabled": true
+						},
+						{
+							"key": "endCreationDate",
+							"value": "2024-01-28",
+							"disabled": true
+						},
+						{
+							"key": "category",
+							"value": "DOCUMENTARY",
+							"disabled": true
+						},
+						{
+							"key": "sort",
+							"value": "desc",
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": "10",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get video",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/video",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"video"
+							],
+							"query": [
+								{
+									"key": "videoId",
+									"value": "0d1ee022-6f49-4fb5-9052-e03bfbdd1778",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "update",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "update",
+									"disabled": true
+								},
+								{
+									"key": "creationDate",
+									"value": "2024-01-28",
+									"disabled": true
+								},
+								{
+									"key": "endCreationDate",
+									"value": "2024-01-28",
+									"disabled": true
+								},
+								{
+									"key": "category",
+									"value": "DOCUMENTARY",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "desc",
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "731"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"results\": [\n        {\n            \"id\": \"691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n            \"title\": \"my update video title 2\",\n            \"url\": \"http://localhost:8080/video/streaming?id=691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n            \"description\": \"my update video description 2\",\n            \"category\": \"COMEDY\",\n            \"creationDate\": \"2024-01-29T15:59:15.529-0300\",\n            \"lastUpdate\": \"2024-01-29T16:06:15.358-0300\",\n            \"version\": 1,\n            \"quantityView\": 0\n        },\n        {\n            \"id\": \"3974fc02-d137-48b2-bdb4-4793b8b4a4a8\",\n            \"title\": \"my video title\",\n            \"url\": \"http://localhost:8080/video/streaming?id=3974fc02-d137-48b2-bdb4-4793b8b4a4a8\",\n            \"description\": \"my video description\",\n            \"category\": \"COMEDY\",\n            \"creationDate\": \"2024-01-29T14:33:43.965-0300\",\n            \"lastUpdate\": \"2024-01-29T14:33:43.965-0300\",\n            \"version\": 49,\n            \"quantityView\": 49\n        }\n    ],\n    \"limit\": 10,\n    \"offset\": 0,\n    \"total\": 2\n}"
+				}
+			]
+		},
+		{
+			"name": "delete video",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-API-Version",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{local}}/video?videoId=691fa4f1-81b9-4ab8-a79d-9b702622e6f8",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"video"
+					],
+					"query": [
+						{
+							"key": "videoId",
+							"value": "691fa4f1-81b9-4ab8-a79d-9b702622e6f8"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "delete video",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/video?videoId=691fa4f1-81b9-4ab8-a79d-9b702622e6f8",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"video"
+							],
+							"query": [
+								{
+									"key": "videoId",
+									"value": "691fa4f1-81b9-4ab8-a79d-9b702622e6f8"
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [],
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "adding favotite video",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-API-Version",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"videoId\": \"4284da97-22fc-49ae-9328-17955284d757\",\r\n    \"category\": \"COMEDY\",\r\n    \"userId\": \"1234\",\r\n    \"favotire\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{local}}/favorite",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"favorite"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "adding favotite video",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"videoId\": \"4284da97-22fc-49ae-9328-17955284d757\",\r\n    \"category\": \"COMEDY\",\r\n    \"userId\": \"1234\",\r\n    \"favotire\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/favorite",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"favorite"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Location",
+							"value": "/favorite/4284da97-22fc-49ae-9328-17955284d757"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "156"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"dd6b91fa-356f-45b2-b5ef-a229ea76508a\",\n    \"videoId\": \"4284da97-22fc-49ae-9328-17955284d757\",\n    \"category\": \"COMEDY\",\n    \"userId\": 1234,\n    \"favorite\": null,\n    \"version\": 1\n}"
+				}
+			]
+		},
+		{
+			"name": "recommendation",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-Version",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{local}}/favorite",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"favorite"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "recommendation",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/favorite",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"favorite"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "336"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"3974fc02-d137-48b2-bdb4-4793b8b4a4a8\",\n        \"title\": \"my video title\",\n        \"url\": \"http://localhost:8080/video/streaming?id=3974fc02-d137-48b2-bdb4-4793b8b4a4a8\",\n        \"description\": \"my video description\",\n        \"category\": \"COMEDY\",\n        \"creationDate\": \"2024-01-29T14:33:43.965-0300\",\n        \"lastUpdate\": \"2024-01-29T14:33:43.965-0300\",\n        \"version\": 49,\n        \"quantityView\": 49\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "get summary",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-Version",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{local}}/summary",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"summary"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get summary",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/summary",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"summary"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "57"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"total\": 2,\n    \"QuantityOfFavoriteVideos\": 1,\n    \"viewingMedia\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "video stream by video id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/video/streaming?id=0e2fa411-cad4-457d-8423-ae552cc4d4cb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"video",
+						"streaming"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "0e2fa411-cad4-457d-8423-ae552cc4d4cb"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
