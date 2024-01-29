@@ -1,7 +1,6 @@
 package com.postechvideostreaming.videostreaming.service.favorite;
 
 import com.postechvideostreaming.videostreaming.domain.favorite.FavoriteVideo;
-import com.postechvideostreaming.videostreaming.domain.video.Category;
 import com.postechvideostreaming.videostreaming.domain.video.Video;
 import com.postechvideostreaming.videostreaming.dto.favorite.CategoryCount;
 import com.postechvideostreaming.videostreaming.dto.favorite.FavoriteVideoDTO;
@@ -9,14 +8,9 @@ import com.postechvideostreaming.videostreaming.exception.FailedDependencyExcept
 import com.postechvideostreaming.videostreaming.repository.favorite.FavoriteVideoRepository;
 import com.postechvideostreaming.videostreaming.repository.video.VideoRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -43,7 +37,7 @@ public record FavoriteVideoService(
             .collectList()
             .flatMapMany(it -> {
               var categories = it.stream().map(CategoryCount::_id).toList();
-              return videoRepository.findRandomVideosByCategory(categories,10) ;
+              return videoRepository.findRandomVideosByCategory(categories, 10);
             });
   }
 }

@@ -1,10 +1,10 @@
 package com.postechvideostreaming.videostreaming.dto.summary;
 
 public record ViewDTO(
-        Long quantityView
+        Long total
 ) {
 
   public Long quantityView() {
-    return quantityView == null ? 0L : quantityView;
+    return total == null ? 0L : total;
   }
 }

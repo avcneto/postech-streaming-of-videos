@@ -16,7 +16,12 @@ public record SummaryService(
     return Mono.zip(videoRepository.count(),
                     favoriteVideoRepository.count(),
                     videoRepository.sumQuantityView())
-            .map(it -> new SummaryDTO(it.getT1(), it.getT2(), getViewAverage(it.getT3().quantityView(), it.getT1())));
+            .map(it -> new SummaryDTO(
+                    it.getT1(),
+                    it.getT2(),
+                    getViewAverage(it.getT3().quantityView(), it.getT1()),
+                    it.getT3().quantityView()
+            ));
   }
 
   private Long getViewAverage(Long quantityView, Long total) {
