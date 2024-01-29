@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.postechvideostreaming.videostreaming.dto.video.VideoDTO;
 import java.time.ZonedDateTime;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @Document
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 public class Video {
 
