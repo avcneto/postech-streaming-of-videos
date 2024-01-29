@@ -26,6 +26,7 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
+    testImplementation("org.mockito:mockito-core:5.10.0")
 }
 
 
