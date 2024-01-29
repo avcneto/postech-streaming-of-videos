@@ -1,13 +1,20 @@
 package com.postechvideostreaming.videostreaming.repository.video;
 
+import com.postechvideostreaming.videostreaming.domain.video.Category;
 import com.postechvideostreaming.videostreaming.domain.video.Video;
 import com.postechvideostreaming.videostreaming.domain.video.VideoSearchParams;
 import com.postechvideostreaming.videostreaming.dto.video.VideoSearch;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.SampleOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 import static com.postechvideostreaming.videostreaming.domain.video.Order.ASC;
 import static com.postechvideostreaming.videostreaming.util.Validators.isNullOrEmptyOrBlank;
@@ -21,6 +28,7 @@ public class VideoRepositoryImpl implements VideoRepositoryCustom {
   private static final String DESCRIPTION = "description";
   private static final String CATEGORY = "category";
   private static final String CREATION_DATE = "creationDate";
+  private static final String VIDEO = "video";
   private static final String OPTIONS = "i";
   private static final int TWENTY_THREE = 23;
   private static final int FIFTY_NINE = 59;
@@ -66,4 +74,14 @@ public class VideoRepositoryImpl implements VideoRepositoryCustom {
             params.getLimit(), params.getOffset()));
   }
 
+
+  @Override
+  public Flux<Video> findRandomVideosByCategory(List<Category> category, Integer limit) {
+    MatchOperation matchOperation = Aggregation.match(Criteria.where(CATEGORY).in(category));
+    SampleOperation sampleOperation = Aggregation.sample(limit);
+
+    Aggregation aggregation = Aggregation.newAggregation(matchOperation, sampleOperation);
+
+    return mongoTemplate.aggregate(aggregation, VIDEO, Video.class);
+  }
 }

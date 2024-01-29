@@ -4,9 +4,12 @@ import com.postechvideostreaming.videostreaming.domain.video.Video;
 import com.postechvideostreaming.videostreaming.domain.video.VideoSearchParams;
 import com.postechvideostreaming.videostreaming.dto.video.UpdateVideoDTO;
 import com.postechvideostreaming.videostreaming.dto.video.VideoDTO;
+import com.postechvideostreaming.videostreaming.exception.BadRequestException;
 import com.postechvideostreaming.videostreaming.exception.FailedDependencyException;
+import com.postechvideostreaming.videostreaming.exception.NotFoundException;
 import com.postechvideostreaming.videostreaming.repository.video.VideoRepository;
 import com.postechvideostreaming.videostreaming.util.Pagination;
+import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.ObjectWriteResponse;
@@ -21,6 +24,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -32,29 +36,23 @@ import static java.util.Collections.emptyList;
 
 @Slf4j
 @Service
-public class VideoService {
-
-  @Value("${minio.bucket}")
-  private String bucketName;
-
-  @Value("${server.port}")
-  private Integer port;
+public record VideoService(
+        VideoRepository videoRepository,
+        MinioClient minioClient,
+        @Value("${minio.bucket}")
+        String bucketName,
+        @Value("${server.port}")
+        Integer port
+) {
 
   private static final String ERROR_TO_SAVE_IN_MINIO = "Error to save in minio";
   private static final String ERROR_GETTING_MINIO_URL = "Error getting minio url";
+  private static final String VIDEO_NOT_FOUND = "video not found";
   private static final String NON_MATCHING = "non-matching fields between UserUpdateDTO and User";
   private static final String INACCESSIBLE_FIELDS = "user update has inaccessible fields";
   private static final String ERROR_TO_REMOVE_THE_VIDEO = "error to remove the video";
-  private static final String STREAMING_URL = "http://localhost:%s/streaming/video/%s";
+  private static final String STREAMING_URL = "http://localhost:%s/video/streaming?id=%s";
   private static final Long ZERO = 0L;
-
-  private final VideoRepository videoRepository;
-  private final MinioClient minioClient;
-
-  public VideoService(VideoRepository videoRepository, MinioClient minioClient) {
-    this.videoRepository = videoRepository;
-    this.minioClient = minioClient;
-  }
 
   public Mono<VideoDTO> uploadVideo(Mono<FilePart> video, String title, String description, String category) {
     return video
@@ -126,11 +124,37 @@ public class VideoService {
         return videoRepository.deleteById(videoId);
       } catch (Exception ex) {
         log.error(ERROR_TO_REMOVE_THE_VIDEO, ex);
-        return Mono.error(new FailedDependencyException(ERROR_TO_REMOVE_THE_VIDEO, ex));
+        return Mono.error(new BadRequestException(ERROR_TO_REMOVE_THE_VIDEO));
       }
     });
   }
 
+  public Mono<InputStream> getStreamingVideo(String id) {
+    return getVideo(id)
+            .flatMap(inputStream ->
+                    videoRepository.findById(id)
+                            .flatMap(this::updateQuantityAndView)
+                            .thenReturn(inputStream)
+            )
+            .onErrorResume(ex -> Mono.error(new NotFoundException(VIDEO_NOT_FOUND)));
+  }
+
+  private Mono<InputStream> getVideo(String id) {
+    return Mono.fromCallable(() ->
+                    minioClient.getObject(
+                            GetObjectArgs.builder()
+                                    .bucket(bucketName)
+                                    .object(id)
+                                    .build()))
+            .flatMap(inputStream -> Mono.just(inputStream)
+                    .onErrorResume(ex -> Mono.error(new NotFoundException(VIDEO_NOT_FOUND))));
+  }
+
+
+  private Mono<Video> updateQuantityAndView(Video video) {
+    video.setQuantityView(video.getQuantityView() + 1);
+    return videoRepository.save(video);
+  }
 
   private VideoDTO getVideoDTO(ObjectWriteResponse minioResponse, String title, String description, String category) {
     var date = ZonedDateTime.now();

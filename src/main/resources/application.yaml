@@ -29,6 +29,8 @@ server:
     include-stacktrace: on_param
     include-message: always
     include-binding-errors: always
+  netty:
+    connection-timeout: 60000
 
 logging:
   level:

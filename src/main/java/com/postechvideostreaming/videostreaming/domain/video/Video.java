@@ -35,6 +35,7 @@ public class Video {
   private ZonedDateTime lastUpdate;
   @Version
   private Long version;
+  private Long quantityView = 0L;
 
   public Video(VideoDTO videoDTO) {
     this.id = videoDTO.id();

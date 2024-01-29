@@ -1,6 +1,8 @@
 package com.postechvideostreaming.videostreaming.controller;
 
 import com.postechvideostreaming.videostreaming.domain.favorite.FavoriteVideo;
+import com.postechvideostreaming.videostreaming.domain.video.Video;
+import com.postechvideostreaming.videostreaming.dto.favorite.CategoryCount;
 import com.postechvideostreaming.videostreaming.dto.favorite.FavoriteVideoDTO;
 import com.postechvideostreaming.videostreaming.service.favorite.FavoriteVideoService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.List;
 
 import static com.postechvideostreaming.videostreaming.util.Constants.X_API_VERSION_1;
 import static java.lang.String.format;
@@ -35,7 +38,9 @@ public record FavoriteController(
             );
   }
 
-//  @GetMapping(headers = X_API_VERSION_1)
-//  public
+  @GetMapping(headers = X_API_VERSION_1)
+  public Mono<List<Video>> getRecommendation() {
+    return favoriteVideoService.getRecommendation().collectList();
+  }
 
 }

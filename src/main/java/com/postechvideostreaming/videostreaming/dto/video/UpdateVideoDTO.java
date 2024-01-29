@@ -9,16 +9,11 @@ public record UpdateVideoDTO(
         String description,
         Category category
 ) {
-
-  private static final String TITLE = "title";
-  private static final String DESCRIPTION = "description";
-  private static final String CATEGORY = "category";
-
   @JsonCreator
   public UpdateVideoDTO(
-          @JsonProperty(TITLE) String title,
-          @JsonProperty(DESCRIPTION) String description,
-          @JsonProperty(CATEGORY) String category) {
+          @JsonProperty("title") String title,
+          @JsonProperty("description") String description,
+          @JsonProperty("category") String category) {
     this(title, description, Category.convertStringToCategory(category));
   }
 }
