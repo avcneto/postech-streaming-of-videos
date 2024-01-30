@@ -62,7 +62,12 @@ banco de dados.
 A persistência de dados será realizado através do banco de dados MongoDB para dados cadastrais. 
 Já os vídeos ficarão armazenados no MinIO.
 
-[Acesse aqui MinIO](https://min.io/)
+- Para acessar o admin precisa utilizar as credenciais:
+- ``user: admin``
+- ``password: my-password``
+
+[Acesso ao admin do MinIO](http://localhost:9001/browse/)
+[Acesso ao site do MinIO](https://min.io/)
 
 ## Tecnologias utilizadas
 
