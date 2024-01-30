@@ -26,7 +26,7 @@ public class VideoSearchParamsTest {
     @Test
     void testSetSort() {
         VideoSearchParams videoSearchParams = new VideoSearchParams();
-        videoSearchParams.setSort("ASC");
+        videoSearchParams.setSort(Order.ASC);
 
         assertEquals(Order.ASC, videoSearchParams.getSort());
     }
