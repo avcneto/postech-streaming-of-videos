@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "7a91a710-b597-42a3-a7c1-3c9a815d6310",
+		"_postman_id": "eee90663-95a2-49ba-8297-9691de108922",
 		"name": "video-streaming",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29499384"
+		"_exporter_id": "15043957"
 	},
 	"item": [
 		{
@@ -171,7 +171,7 @@
 					"header": [
 						{
 							"key": "Location",
-							"value": "/upload/c1e58988-e2f7-48e8-a100-6c1cf037814e"
+							"value": "/upload/691fa4f1-81b9-4ab8-a79d-9b702622e6f8"
 						},
 						{
 							"key": "Content-Type",
@@ -183,7 +183,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"id\": \"c1e58988-e2f7-48e8-a100-6c1cf037814e\",\n    \"title\": \"my video title\",\n    \"url\": \"http://localhost:8080/video/streaming?id=c1e58988-e2f7-48e8-a100-6c1cf037814e\",\n    \"description\": \"my video description\",\n    \"category\": \"COMEDY\",\n    \"creationDate\": \"2024-01-29T23:31:11.373-0300\",\n    \"lastUpdate\": \"2024-01-29T23:31:11.373-0300\"\n}"
+					"body": "{\n    \"id\": \"691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n    \"title\": \"my video title\",\n    \"url\": \"http://localhost:8080/video/streaming?id=691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n    \"description\": \"my video description\",\n    \"category\": \"COMEDY\",\n    \"creationDate\": \"2024-01-29T15:59:15.529-0300\",\n    \"lastUpdate\": \"2024-01-29T15:59:15.529-0300\"\n}"
 				}
 			]
 		},
@@ -208,7 +208,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{local}}/video?videoId=c1e58988-e2f7-48e8-a100-6c1cf037814e",
+					"raw": "{{local}}/video?videoId=691fa4f1-81b9-4ab8-a79d-9b702622e6f8",
 					"host": [
 						"{{local}}"
 					],
@@ -218,7 +218,7 @@
 					"query": [
 						{
 							"key": "videoId",
-							"value": "c1e58988-e2f7-48e8-a100-6c1cf037814e"
+							"value": "691fa4f1-81b9-4ab8-a79d-9b702622e6f8"
 						}
 					]
 				}
@@ -245,7 +245,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{local}}/video?videoId=c1e58988-e2f7-48e8-a100-6c1cf037814e",
+							"raw": "{{local}}/video?videoId=691fa4f1-81b9-4ab8-a79d-9b702622e6f8",
 							"host": [
 								"{{local}}"
 							],
@@ -255,7 +255,7 @@
 							"query": [
 								{
 									"key": "videoId",
-									"value": "c1e58988-e2f7-48e8-a100-6c1cf037814e"
+									"value": "691fa4f1-81b9-4ab8-a79d-9b702622e6f8"
 								}
 							]
 						}
@@ -274,7 +274,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"id\": \"c1e58988-e2f7-48e8-a100-6c1cf037814e\",\n    \"title\": \"my update video title 2\",\n    \"url\": \"http://localhost:8080/video/streaming?id=c1e58988-e2f7-48e8-a100-6c1cf037814e\",\n    \"description\": \"my update video description 2\",\n    \"category\": \"COMEDY\",\n    \"creationDate\": \"2024-01-29T23:31:11.373-0300\",\n    \"lastUpdate\": \"2024-01-29T23:31:33.919-0300\"\n}"
+					"body": "{\n    \"id\": \"691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n    \"title\": \"my update video title 2\",\n    \"url\": \"http://localhost:8080/video/streaming?id=691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n    \"description\": \"my update video description 2\",\n    \"category\": \"COMEDY\",\n    \"creationDate\": \"2024-01-29T15:59:15.529-0300\",\n    \"lastUpdate\": \"2024-01-29T16:06:15.358-0300\"\n}"
 				}
 			]
 		},
@@ -325,7 +325,7 @@
 						},
 						{
 							"key": "category",
-							"value": "COMEDY",
+							"value": "DOCUMENTARY",
 							"disabled": true
 						},
 						{
@@ -340,7 +340,7 @@
 						},
 						{
 							"key": "limit",
-							"value": "2",
+							"value": "10",
 							"disabled": true
 						}
 					]
@@ -394,7 +394,7 @@
 								},
 								{
 									"key": "category",
-									"value": "COMEDY",
+									"value": "DOCUMENTARY",
 									"disabled": true
 								},
 								{
@@ -409,7 +409,7 @@
 								},
 								{
 									"key": "limit",
-									"value": "2",
+									"value": "10",
 									"disabled": true
 								}
 							]
@@ -425,11 +425,11 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "728"
+							"value": "731"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"results\": [\n        {\n            \"id\": \"c1e58988-e2f7-48e8-a100-6c1cf037814e\",\n            \"title\": \"my update video title 2\",\n            \"url\": \"http://localhost:8080/video/streaming?id=c1e58988-e2f7-48e8-a100-6c1cf037814e\",\n            \"description\": \"my update video description 2\",\n            \"category\": \"COMEDY\",\n            \"creationDate\": \"2024-01-29T23:31:11.373-0300\",\n            \"lastUpdate\": \"2024-01-29T23:31:33.919-0300\",\n            \"version\": 1,\n            \"quantityView\": 0\n        },\n        {\n            \"id\": \"73c14139-d2b1-4649-a63e-822d28604013\",\n            \"title\": \"my video title\",\n            \"url\": \"http://localhost:8080/video/streaming?id=73c14139-d2b1-4649-a63e-822d28604013\",\n            \"description\": \"my video description\",\n            \"category\": \"COMEDY\",\n            \"creationDate\": \"2024-01-29T23:27:29.117-0300\",\n            \"lastUpdate\": \"2024-01-29T23:27:29.117-0300\",\n            \"version\": 2,\n            \"quantityView\": 2\n        }\n    ],\n    \"limit\": 2,\n    \"offset\": 0,\n    \"total\": 2\n}"
+					"body": "{\n    \"results\": [\n        {\n            \"id\": \"691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n            \"title\": \"my update video title 2\",\n            \"url\": \"http://localhost:8080/video/streaming?id=691fa4f1-81b9-4ab8-a79d-9b702622e6f8\",\n            \"description\": \"my update video description 2\",\n            \"category\": \"COMEDY\",\n            \"creationDate\": \"2024-01-29T15:59:15.529-0300\",\n            \"lastUpdate\": \"2024-01-29T16:06:15.358-0300\",\n            \"version\": 1,\n            \"quantityView\": 0\n        },\n        {\n            \"id\": \"3974fc02-d137-48b2-bdb4-4793b8b4a4a8\",\n            \"title\": \"my video title\",\n            \"url\": \"http://localhost:8080/video/streaming?id=3974fc02-d137-48b2-bdb4-4793b8b4a4a8\",\n            \"description\": \"my video description\",\n            \"category\": \"COMEDY\",\n            \"creationDate\": \"2024-01-29T14:33:43.965-0300\",\n            \"lastUpdate\": \"2024-01-29T14:33:43.965-0300\",\n            \"version\": 49,\n            \"quantityView\": 49\n        }\n    ],\n    \"limit\": 10,\n    \"offset\": 0,\n    \"total\": 2\n}"
 				}
 			]
 		},
@@ -493,7 +493,7 @@
 					"_postman_previewlanguage": "plain",
 					"header": [],
 					"cookie": [],
-					"body": null
+					"body": ""
 				}
 			]
 		},
@@ -576,7 +576,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"id\": \"952f2ba6-f8f2-4bdd-9a86-7f5a3578aabd\",\n    \"videoId\": \"4284da97-22fc-49ae-9328-17955284d757\",\n    \"category\": \"COMEDY\",\n    \"userId\": 1234,\n    \"favorite\": null,\n    \"version\": 1\n}"
+					"body": "{\n    \"id\": \"dd6b91fa-356f-45b2-b5ef-a229ea76508a\",\n    \"videoId\": \"4284da97-22fc-49ae-9328-17955284d757\",\n    \"category\": \"COMEDY\",\n    \"userId\": 1234,\n    \"favorite\": null,\n    \"version\": 1\n}"
 				}
 			]
 		},
@@ -633,11 +633,11 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "1351"
+							"value": "336"
 						}
 					],
 					"cookie": [],
-					"body": "[\n    {\n        \"id\": \"73c14139-d2b1-4649-a63e-822d28604013\",\n        \"title\": \"my video title\",\n        \"url\": \"http://localhost:8080/video/streaming?id=73c14139-d2b1-4649-a63e-822d28604013\",\n        \"description\": \"my video description\",\n        \"category\": \"COMEDY\",\n        \"creationDate\": \"2024-01-29T23:27:29.117-0300\",\n        \"lastUpdate\": \"2024-01-29T23:27:29.117-0300\",\n        \"version\": 2,\n        \"quantityView\": 2\n    },\n    {\n        \"id\": \"c1e58988-e2f7-48e8-a100-6c1cf037814e\",\n        \"title\": \"my update video title 2\",\n        \"url\": \"http://localhost:8080/video/streaming?id=c1e58988-e2f7-48e8-a100-6c1cf037814e\",\n        \"description\": \"my update video description 2\",\n        \"category\": \"COMEDY\",\n        \"creationDate\": \"2024-01-29T23:31:11.373-0300\",\n        \"lastUpdate\": \"2024-01-29T23:31:33.919-0300\",\n        \"version\": 1,\n        \"quantityView\": 0\n    },\n    {\n        \"id\": \"4c632d2d-74ac-4915-abe1-d674e8b49067\",\n        \"title\": \"my video title\",\n        \"url\": \"http://localhost:8080/video/streaming?id=4c632d2d-74ac-4915-abe1-d674e8b49067\",\n        \"description\": \"my video description\",\n        \"category\": \"COMEDY\",\n        \"creationDate\": \"2024-01-29T23:08:25.447-0300\",\n        \"lastUpdate\": \"2024-01-29T23:08:25.447-0300\",\n        \"version\": 0,\n        \"quantityView\": 0\n    },\n    {\n        \"id\": \"9a35badc-b876-4ad7-85b4-dd3cbc1c1374\",\n        \"title\": \"my video title\",\n        \"url\": \"http://localhost:8080/video/streaming?id=9a35badc-b876-4ad7-85b4-dd3cbc1c1374\",\n        \"description\": \"my video description\",\n        \"category\": \"COMEDY\",\n        \"creationDate\": \"2024-01-29T23:00:45.731-0300\",\n        \"lastUpdate\": \"2024-01-29T23:00:45.731-0300\",\n        \"version\": 0,\n        \"quantityView\": 0\n    }\n]"
+					"body": "[\n    {\n        \"id\": \"3974fc02-d137-48b2-bdb4-4793b8b4a4a8\",\n        \"title\": \"my video title\",\n        \"url\": \"http://localhost:8080/video/streaming?id=3974fc02-d137-48b2-bdb4-4793b8b4a4a8\",\n        \"description\": \"my video description\",\n        \"category\": \"COMEDY\",\n        \"creationDate\": \"2024-01-29T14:33:43.965-0300\",\n        \"lastUpdate\": \"2024-01-29T14:33:43.965-0300\",\n        \"version\": 49,\n        \"quantityView\": 49\n    }\n]"
 				}
 			]
 		},
@@ -694,11 +694,11 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "72"
+							"value": "57"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"total\": 4,\n    \"QuantityOfFavoriteVideos\": 2,\n    \"viewingMedia\": 0,\n    \"totalViews\": 2\n}"
+					"body": "{\n    \"total\": 2,\n    \"QuantityOfFavoriteVideos\": 1,\n    \"viewingMedia\": 0\n}"
 				}
 			]
 		},
