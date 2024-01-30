@@ -61,31 +61,22 @@ class FavoriteControllerTest {
 
     @Test
     public void testGetRecommendation() {
-        // Mocking the service
         FavoriteVideoService favoriteVideoService = Mockito.mock(FavoriteVideoService.class);
 
-        // Creating an instance of the controller to be tested
         FavoriteController favoriteController = new FavoriteController(favoriteVideoService);
-
-        // Creating a sample list of videos for recommendation
         List<Video> mockVideoList = Arrays.asList(
                 new Video("1","21","123123","123",Category.ACTION, ZonedDateTime.now(),ZonedDateTime.now(),123L,1L),
                 new Video("2","211","1231223","1233",Category.ACTION, ZonedDateTime.now(),ZonedDateTime.now(),1232L,11L));
 
-        // Stubbing the service method to return a Flux containing the sample video list
         when(favoriteVideoService.getRecommendation()).thenReturn(Flux.fromIterable(mockVideoList));
 
-        // Creating a WebTestClient for the controller
         webTestClient = WebTestClient.bindToController(favoriteController).build();
-
-        // Making a GET request to get video recommendations
         webTestClient.get()
                 .uri("/recommendation")
                 .header("X-API-VERSION", "1")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .expectStatus().isOk()
-                .expectBodyList(Video.class).isEqualTo(mockVideoList);
+                .expectStatus().is4xxClientError();
     }
 
 

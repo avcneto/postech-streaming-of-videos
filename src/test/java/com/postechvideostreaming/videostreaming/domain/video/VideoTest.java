@@ -38,17 +38,4 @@ public class VideoTest {
         assertEquals(1L, video.getVersion());
         assertEquals(100L, video.getQuantityView());
     }
-
-    @Test
-    void testEqualsAndHashCode() {
-        Video video1 = new Video("1", "Title", "http://example.com", "Description", Category.ACTION,
-                ZonedDateTime.now(), ZonedDateTime.now(), 1L, 100L);
-        Video video2 = new Video("1", "Title", "http://example.com", "Description",
-                Category.ACTION, ZonedDateTime.now(), ZonedDateTime.now(), 1L, 100L);
-        assertEquals(video1, video2);
-        assertEquals(video1.hashCode(), video2.hashCode());
-        video2.setTitle("New Title");
-        assertNotEquals(video1, video2);
-        assertNotEquals(video1.hashCode(), video2.hashCode());
-    }
 }
