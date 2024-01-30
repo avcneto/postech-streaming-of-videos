@@ -1,21 +1,28 @@
 package com.postechvideostreaming.videostreaming.dto.video;
 
-import static com.postechvideostreaming.videostreaming.util.Constants.ZONED_DATETIME_FORMAT;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.postechvideostreaming.videostreaming.domain.video.Category;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.ZonedDateTime;
-import org.springframework.web.multipart.MultipartFile;
+
+import static com.postechvideostreaming.videostreaming.util.Constants.ZONED_DATETIME_FORMAT;
 
 public record VideoDTO(
-    String id,
-    String title,
-    String url,
-    String description,
-    Category category,
-    @JsonFormat(pattern = ZONED_DATETIME_FORMAT)
-    ZonedDateTime creationDate,
-    @JsonFormat(pattern = ZONED_DATETIME_FORMAT)
-    ZonedDateTime lastUpdate
+        @NotBlank
+        String id,
+        @NotBlank
+        String title,
+        @NotBlank
+        String url,
+        @NotBlank
+        String description,
+        @NotNull
+        Category category,
+        @JsonFormat(pattern = ZONED_DATETIME_FORMAT)
+        ZonedDateTime creationDate,
+        @JsonFormat(pattern = ZONED_DATETIME_FORMAT)
+        ZonedDateTime lastUpdate
 ) {
 }
