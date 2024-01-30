@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VideoDTOTest {
 
-  private static final String ZONED_DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
   private static final String ID = "123";
   private static final String DESCRIPTION = "Video Description";
   private static final String TITLE = "Video Title";

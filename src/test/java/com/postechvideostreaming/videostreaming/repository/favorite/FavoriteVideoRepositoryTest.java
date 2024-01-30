@@ -24,59 +24,53 @@ import static org.mockito.Mockito.when;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 public class FavoriteVideoRepositoryTest {
 
-    @Mock
-    private FavoriteVideoRepository favoriteVideoRepository;
+  @Mock
+  private FavoriteVideoRepository favoriteVideoRepository;
 
-    @InjectMocks
-    private FavoriteVideoService favoriteVideoService;
-
-
-    @Test
-    public void testFindByUserIdAndVideoId() {
-        // Mock data
-        Long userId = 1L;
-        String videoId = "video123";
-        FavoriteVideo favoriteVideo = new FavoriteVideo();
-        favoriteVideo.setId(UUID.randomUUID());
-        favoriteVideo.setVideoId(videoId);
-        favoriteVideo.setUserId(userId);
-
-        // Mock repository behavior
-        when(favoriteVideoRepository.findByUserIdAndVideoId(userId, videoId))
-                .thenReturn(Mono.just(favoriteVideo));
-
-        // Test the service method
-        Mono<FavoriteVideo> result = favoriteVideoRepository.findByUserIdAndVideoId(userId, videoId);
-
-        // Verify the result using StepVerifier
-        StepVerifier.create(result)
-                .expectNextMatches(response -> response.getUserId().equals(userId) &&
-                        response.getVideoId().equals(videoId));
-    }
+  @InjectMocks
+  private FavoriteVideoService favoriteVideoService;
 
 
-    @Test
-    void testCountMostFrequentCategories() {
-        CategoryCount categoryCount1 = new CategoryCount(Category.ACTION, 5L);
-        CategoryCount categoryCount2 = new CategoryCount(Category.ACTION, 3L);
-        CategoryCount categoryCount3 = new CategoryCount(Category.OTHER, 2L);
+  @Test
+  public void testFindByUserIdAndVideoId() {
+    Long userId = 1L;
+    String videoId = "video123";
+    FavoriteVideo favoriteVideo = new FavoriteVideo();
+    favoriteVideo.setId(UUID.randomUUID());
+    favoriteVideo.setVideoId(videoId);
+    favoriteVideo.setUserId(userId);
 
-        FavoriteVideoDTO favoriteVideoDTO = new FavoriteVideoDTO("1", Category.ACTION, 1L, true);
-        FavoriteVideoDTO favoriteVideoDTO2 = new FavoriteVideoDTO("2", Category.ACTION, 2L, true);
-        FavoriteVideoDTO favoriteVideoDTO3 = new FavoriteVideoDTO("3", Category.OTHER, 3L, true);
+    when(favoriteVideoRepository.findByUserIdAndVideoId(userId, videoId))
+            .thenReturn(Mono.just(favoriteVideo));
+    Mono<FavoriteVideo> result = favoriteVideoRepository.findByUserIdAndVideoId(userId, videoId);
+    StepVerifier.create(result)
+            .expectNextMatches(response -> response.getUserId().equals(userId) &&
+                    response.getVideoId().equals(videoId));
+  }
 
-        favoriteVideoService.addFavoriteVideo(favoriteVideoDTO);
-        favoriteVideoService.addFavoriteVideo(favoriteVideoDTO2);
-        favoriteVideoService.addFavoriteVideo(favoriteVideoDTO3);
 
-        Flux<CategoryCount> expectedCategories = Flux.just(categoryCount1, categoryCount2, categoryCount3);
+  @Test
+  void testCountMostFrequentCategories() {
+    CategoryCount categoryCount1 = new CategoryCount(Category.ACTION, 5L);
+    CategoryCount categoryCount2 = new CategoryCount(Category.ACTION, 3L);
+    CategoryCount categoryCount3 = new CategoryCount(Category.OTHER, 2L);
 
-        when(favoriteVideoRepository.countMostFrequentCategories())
-                .thenReturn(expectedCategories);
+    FavoriteVideoDTO favoriteVideoDTO = new FavoriteVideoDTO("1", Category.ACTION, 1L, true);
+    FavoriteVideoDTO favoriteVideoDTO2 = new FavoriteVideoDTO("2", Category.ACTION, 2L, true);
+    FavoriteVideoDTO favoriteVideoDTO3 = new FavoriteVideoDTO("3", Category.OTHER, 3L, true);
 
-        Flux<CategoryCount> resultCategories = favoriteVideoRepository.countMostFrequentCategories();
-        List<CategoryCount> resultList = resultCategories.collectList().block();
-        assertEquals(expectedCategories.collectList().block(), resultList);
-    }
+    favoriteVideoService.addFavoriteVideo(favoriteVideoDTO);
+    favoriteVideoService.addFavoriteVideo(favoriteVideoDTO2);
+    favoriteVideoService.addFavoriteVideo(favoriteVideoDTO3);
+
+    Flux<CategoryCount> expectedCategories = Flux.just(categoryCount1, categoryCount2, categoryCount3);
+
+    when(favoriteVideoRepository.countMostFrequentCategories())
+            .thenReturn(expectedCategories);
+
+    Flux<CategoryCount> resultCategories = favoriteVideoRepository.countMostFrequentCategories();
+    List<CategoryCount> resultList = resultCategories.collectList().block();
+    assertEquals(expectedCategories.collectList().block(), resultList);
+  }
 }
 

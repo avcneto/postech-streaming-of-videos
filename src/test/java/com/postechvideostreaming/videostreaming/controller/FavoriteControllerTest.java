@@ -22,62 +22,49 @@ import static org.mockito.Mockito.when;
 
 class FavoriteControllerTest {
 
-    private static final String X_API_VERSION_1 = "X-API-VERSION=1";
-    private static final String FAVORITE_PATH = "/favorite/%s";
+  private static final String FAVORITE_PATH = "/favorite/%s";
 
-    private WebTestClient webTestClient;
+  private WebTestClient webTestClient;
 
-    @Test
-    public void testAddFavoriteVideo() {
-        // Mocking the service
-        FavoriteVideoService favoriteVideoService = Mockito.mock(FavoriteVideoService.class);
+  @Test
+  public void testAddFavoriteVideo() {
+    FavoriteVideoService favoriteVideoService = Mockito.mock(FavoriteVideoService.class);
+    FavoriteController favoriteController = new FavoriteController(favoriteVideoService);
+    FavoriteVideoDTO favoriteVideoDTO = new FavoriteVideoDTO("123", Category.ACTION, 123L, Boolean.TRUE);
+    FavoriteVideo favoriteVideo = new FavoriteVideo(UUID.randomUUID(), "123", Category.ACTION, 123L, Boolean.TRUE, 1L);
 
-        // Creating an instance of the controller to be tested
-        FavoriteController favoriteController = new FavoriteController(favoriteVideoService);
+    when(favoriteVideoService.addFavoriteVideo(any(FavoriteVideoDTO.class))).thenReturn(Mono.just(favoriteVideo));
+    webTestClient = WebTestClient.bindToController(favoriteController).build();
 
-        // Creating a sample favorite video DTO
-        FavoriteVideoDTO favoriteVideoDTO = new FavoriteVideoDTO("123", Category.ACTION, 123L, Boolean.TRUE);
+    webTestClient.post()
+            .uri("/favorite")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-API-VERSION", "1")
+            .bodyValue(favoriteVideoDTO)
+            .exchange()
+            .expectStatus().isCreated()
+            .expectHeader().valueMatches("Location", String.format(FAVORITE_PATH, favoriteVideo.getVideoId()))
+            .expectBody(FavoriteVideo.class).isEqualTo(favoriteVideo);
+  }
 
-        // Creating a sample favorite video object
-        FavoriteVideo favoriteVideo = new FavoriteVideo(UUID.randomUUID(), "123", Category.ACTION, 123L, Boolean.TRUE, 1L);
+  @Test
+  public void testGetRecommendation() {
+    FavoriteVideoService favoriteVideoService = Mockito.mock(FavoriteVideoService.class);
 
-        // Stubbing the service method to return a Mono containing the sample favorite video
-        when(favoriteVideoService.addFavoriteVideo(any(FavoriteVideoDTO.class))).thenReturn(Mono.just(favoriteVideo));
+    FavoriteController favoriteController = new FavoriteController(favoriteVideoService);
+    List<Video> mockVideoList = Arrays.asList(
+            new Video("1", "21", "123123", "123", Category.ACTION, ZonedDateTime.now(), ZonedDateTime.now(), 123L, 1L),
+            new Video("2", "211", "1231223", "1233", Category.ACTION, ZonedDateTime.now(), ZonedDateTime.now(), 1232L, 11L));
 
-        // Creating a WebTestClient for the controller
-        webTestClient = WebTestClient.bindToController(favoriteController).build();
+    when(favoriteVideoService.getRecommendation()).thenReturn(Flux.fromIterable(mockVideoList));
 
-        // Making a POST request to add a favorite video
-        webTestClient.post()
-                .uri("/favorite")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-API-VERSION", "1")
-                .bodyValue(favoriteVideoDTO)
-                .exchange()
-                .expectStatus().isCreated()
-                .expectHeader().valueMatches("Location", String.format(FAVORITE_PATH, favoriteVideo.getVideoId()))
-                .expectBody(FavoriteVideo.class).isEqualTo(favoriteVideo);
-    }
-
-    @Test
-    public void testGetRecommendation() {
-        FavoriteVideoService favoriteVideoService = Mockito.mock(FavoriteVideoService.class);
-
-        FavoriteController favoriteController = new FavoriteController(favoriteVideoService);
-        List<Video> mockVideoList = Arrays.asList(
-                new Video("1","21","123123","123",Category.ACTION, ZonedDateTime.now(),ZonedDateTime.now(),123L,1L),
-                new Video("2","211","1231223","1233",Category.ACTION, ZonedDateTime.now(),ZonedDateTime.now(),1232L,11L));
-
-        when(favoriteVideoService.getRecommendation()).thenReturn(Flux.fromIterable(mockVideoList));
-
-        webTestClient = WebTestClient.bindToController(favoriteController).build();
-        webTestClient.get()
-                .uri("/recommendation")
-                .header("X-API-VERSION", "1")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().is4xxClientError();
-    }
-
+    webTestClient = WebTestClient.bindToController(favoriteController).build();
+    webTestClient.get()
+            .uri("/recommendation")
+            .header("X-API-VERSION", "1")
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().is4xxClientError();
+  }
 
 }
