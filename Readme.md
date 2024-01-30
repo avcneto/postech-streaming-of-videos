@@ -100,13 +100,17 @@ Já os vídeos ficarão armazenados no MinIO.
 
 A arquitetura utilizada neste projeto baseia-se nos de conceitos Clean Archtecture que
 promove uma estrutura modular e independente de frameworks, priorizando a separação de preocupações e facilitando a manutenção, teste e escalabilidade do sistema. É uma abordagem que enfatiza a organização do código em camadas bem definidas, com regras de negócio no núcleo e detalhes de infraestrutura nas bordas, 
-visando a criação de sistemas robustos e flexíveis
+visando a criação de sistemas robustos e flexíveis.
 
 A versão 17 do Java foi escolhida como base para o projeto devido à sua estabilidade e atualização no momento do
 desenvolvimento. Para facilitar a configuração e o gerenciamento de dependências, o projeto adotou o Gradle, que possui
 uma estrutura simples e ampla biblioteca de plugins. Além disso, o Gradle possui uma vasta integração com repositórios
 centrais e uma
 documentação extensa, tornando-o uma escolha popular e confiável para a construção e gerenciamento de projetos Java.
+
+O Spring WebFlux é uma estrutura reativa do Spring Framework, concebida para construir aplicativos escaláveis e assíncronos. Ao adotar a programação reativa, utilizando tipos como Mono e Flux,
+o WebFlux lida eficientemente com várias solicitações simultâneas, garantindo alto desempenho mesmo sob carga intensiva. Sua flexibilidade é evidente na escolha entre diferentes backends, como servidores baseados em Servlet ou Netty. 
+A integração fácil com projetos Spring, incluindo o Spring Boot, simplifica o desenvolvimento de aplicativos reativos. Em resumo, o Spring WebFlux é valioso para construir sistemas robustos, escaláveis e eficientes em cenários onde a concorrência e a assincronia são cruciais.
 
 Para de reduzir a verbosidade e os famosos códigos boilerplates do código, além de automatizar a geração de getters,
 setters, construtores e outros métodos comuns, o projeto utilizou o Lombok, uma biblioteca para Java. O Lombok também
@@ -124,14 +128,12 @@ que utiliza buckets para organizar objetos. Os objetos são dados binários, com
 
 ## Desafios
 
-- Definir e compreender os relacionamentos .
 - Incluir as regras de validações bem como seus regexs.
 - Tratamento de exceções para possíveis erros durante o consumo das APIs.
-- Definição da arquitetura do projeto (DDD/MVC/tecnologias e outros).
 - Determinação das responsabilidades dos membros da equipe.
 - Subir o bando de dados em container Docker.
-- Integração entre as bases SQL e NoSQL.
 - Utilização do WebFlux.
+- Teste unitários (classe de teste)
 
 ## Documentação Técnica
 
