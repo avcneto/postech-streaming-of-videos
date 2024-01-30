@@ -31,11 +31,6 @@ public class VideoSearchParams {
   private Integer offset = ZERO;
   private Integer limit = TEN;
 
-  public VideoSearchParams setSort(String sort) {
-    this.sort = Order.convertStringToOrder(sort);
-    return this;
-  }
-
   public long getOffsetMultiplyLimit() {
     return (long) this.offset * this.limit;
   }
